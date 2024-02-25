@@ -16,9 +16,13 @@ This project undertakes a comprehensive analysis of user reviews for disaster-re
    - Translates non-English reviews to English for uniform analysis.
 2. **Data Cleansing**  
    - Cleans the dataset to prepare it for topic modelling.
-3. **Topic Modelling**  
+3. **Exploratory Data Analysis**  
+   - Conduct data exploration to gain initial insights such as data amounts and other descriptive statistics
+4. **Experimental Notebook**  
+   - Conduct experiments such as clustering with KMeans before getting the best model in the form of BERTopic
+5. **Topic Modelling**  
    - Extracts topics from user reviews using the BERTopic model.
-4. **Sentiment Analysis**  
+6. **Sentiment Analysis**  
    - Conducts sentiment analysis on user reviews using the VADER tool.
 
 ## 📁 src
