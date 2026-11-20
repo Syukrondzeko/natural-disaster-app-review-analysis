@@ -1,0 +1,1 @@
+'com.finazzi.distquake', 'Earthquake Network', 'en', 'US'

@@ -1,0 +1,31 @@
+# Scraping (src/)
+google-play-scraper
+app-store-web-scraper
+
+# Data handling
+pandas
+openpyxl
+numpy
+tqdm
+
+# 2. Translation: language detection + OPUS-MT (MarianMT)
+langid
+pycountry
+torch
+transformers
+sentencepiece
+sacremoses
+
+# 4. Topic modelling
+sentence-transformers
+bertopic
+umap-learn
+hdbscan
+scikit-learn
+
+# 5. Sentiment analysis
+vaderSentiment
+
+# Plots
+matplotlib
+seaborn
