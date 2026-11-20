@@ -1,45 +1,121 @@
-# 🚨 Disaster Mobile App Review Analysis
+# Disaster Mobile App Review Analysis
 
-This project undertakes a comprehensive analysis of user reviews for disaster-related mobile applications from both the Google Play Store and Apple App Store. Aimed at uncovering insights into user sentiments, feature requests, and overall app performance, this analysis is crucial for developers and stakeholders in the disaster management domain.
+Replication package for the paper:
 
-## 🗂 Dataset Folder Structure
+> **Engineering for Crisis Management: A User-Centred Analysis of Disaster Mobile Applications**
+> Muhamad Syukron, Anuradha Madugalla, Mojtaba Shahin, John Grundy, Jonathan Abrahams.
+> Submitted to the *International Journal of Disaster Risk Reduction*, 2026.
 
-- **phase 0**: Contains lists of apps and their IDs for scraping reviews from the Play Store and App Store.
-- **phase 1**: Stores the results of the scraping process.
-- **phase 2**: Includes translated non-English reviews.
-- **phase 3**: Features a clean dataset after pre-processing, ready for topic modelling.
-- **phase 4**: Holds the results of topic modelling, prepared for sentiment analysis.
+The study analyses 70 disaster mobile apps and their user reviews from the Google Play Store and Apple App Store. It uses topic modelling (BERTopic) to find what users talk about, and sentiment analysis (VADER) to find which topics they are least satisfied with.
 
-## 📘 Notebooks
+This repository contains the app lists, the scraped reviews, every intermediate dataset, and the code that produces the results in the paper.
 
-1. **Review Translation**  
-   - Translates non-English reviews to English for uniform analysis.
-2. **Data Cleansing**  
-   - Cleans the dataset to prepare it for topic modelling.
-3. **Exploratory Data Analysis**  
-   - Conduct data exploration to gain initial insights such as data amounts and other descriptive statistics
-4. **Experimental Notebook**  
-   - Conduct experiments such as clustering with KMeans before getting the best model in the form of BERTopic
-5. **Topic Modelling**  
-   - Extracts topics from user reviews using the BERTopic model.
-6. **Sentiment Analysis**  
-   - Conducts sentiment analysis on user reviews using the VADER tool.
+| | |
+|---|---|
+| Apps analysed | 70 |
+| Reviews collected | 60,473 (45,250 Google Play, 15,223 App Store) |
+| Reviews used for topic modelling | 48,621 |
+| Reviews in the final topics | 7,667 |
+| Final topics | 22 |
+| Data collection | October 2023, updated January 2026 |
 
-## 📁 src
+## Pipeline
 
-1. **Apple App Store Scraper**  
-   - Scrapes user reviews from Apple App Store apps.
-2. **Google Play Store Scraper**  
-   - Scrapes user reviews from Google Play Store apps.
+Run the notebooks in order. Each one reads the previous step's output from `data/` and writes its own.
 
-## 🙏 Acknowledgements
+| Step | Notebook / script | What it does | Output |
+|---|---|---|---|
+| 0 | `src/google_playstore_scrapper.py`, `src/apple_appstore_scrapper.py` | Scrape all public reviews for the apps in `data/0_app_lists/` | `data/1_raw/2024/`, `data/1_raw/2026/` |
+| 1 | `1. Cleansing Scrapped Data` | Merge the 2024 and 2026 scrapes, remove duplicates, label the store | `1_raw/final_raw_df.xlsx` (60,473 reviews) |
+| 2 | `2. Translation` | Remove emoji-only reviews (60,244 remain), detect language with `langid`, translate 7,947 non-English reviews to English with OPUS-MT | `2_translated/final_translated_df.xlsx` |
+| 3 | `3. Pre-Processing` | Remove reviews of three words or fewer (49,025 remain) and reviews with non-Latin characters | `3_clean/clean_df.xlsx` (48,621 reviews) |
+| 4 | `4. Modelling` | Embed reviews with SBERT (`all-MiniLM-L6-v2`), run BERTopic for 20–35 topics, choose 25 by silhouette score, then re-cluster each topic to remove hidden outliers | `4_topics/exp/metrics_summary.xlsx`, `4_topics/all_clusters_with_final_cluster.xlsx` |
+| 5 | `5. Sentiment Analysis` | Name and merge overlapping topics (22 final topics), score each review with VADER, summarise rating and sentiment per topic | `5_sentiment/final_data.xlsx` (7,667 reviews) |
 
-- Special thanks to the developers and contributors of the [App Store Scraper](https://github.com/cowboy-bebug/app-store-scraper) and [Google Play Scraper](https://github.com/JoMingyu/google-play-scraper) tools, which made this analysis possible.
+In notebook 5, the VADER compound score is labelled **Positive** above 0.4, **Negative** below 0.1, and **Neutral** in between. User ratings are labelled negative (1–2), neutral (3) and positive (4–5).
 
-## 👤 Authors
+## Repository structure
 
-- [Muhamad Syukron](https://github.com/yourgithubprofile) - Feel free to connect and explore more projects.
+```
+├── src/                     review scrapers
+├── notebooks/               analysis notebooks 1–5
+├── data/
+│   ├── 0_app_lists/         app IDs scraped in 2024 and 2026
+│   ├── 1_raw/               raw reviews per scrape, merged raw dataset
+│   ├── 2_translated/        translations per language, merged translated dataset
+│   ├── 3_clean/             pre-processed dataset used for topic modelling
+│   ├── 4_topics/
+│   │   ├── exp/             metrics and topic info for 20–35 topics
+│   │   ├── temp/            first-stage cluster used for sub-clustering
+│   │   └── refining/        sub-clusters kept after outlier removal
+│   └── 5_sentiment/         topic-labelled reviews with sentiment scores
+└── requirements.txt
+```
 
----
+## Reproducing the analysis
 
-This project is part of a broader initiative to leverage data science in enhancing disaster preparedness and response strategies. By analyzing user feedback, we aim to contribute valuable insights towards the development of more effective and user-friendly disaster management solutions.
+1. **Set up Python** (3.10 or newer):
+   ```bash
+   git clone https://github.com/Syukrondzeko/natural-disaster-app-review-analysis.git
+   cd natural-disaster-app-review-analysis
+   python -m venv .venv && source .venv/bin/activate
+   pip install -r requirements.txt
+   ```
+2. **Start from the included data.** Scraping again is optional: app stores change over time, so a new scrape will not return the same reviews. To scrape anyway, run `python src/google_playstore_scrapper.py` and `python src/apple_appstore_scrapper.py`.
+3. **Run the notebooks** in `notebooks/` from 1 to 5. All paths are relative to that folder (`DATA_DIR = "../data"`). Notebooks 2 and 4 run much faster on a GPU. On Google Colab, clone the repository and `%cd` into `notebooks/` first; the first code cell of each notebook shows how.
+
+You can start at any step, because every intermediate output is included.
+
+**Notes on reproducibility**
+- UMAP and HDBSCAN are not fully deterministic, so re-running notebook 4 may give slightly different topics. Use the included outputs to reproduce the paper's tables exactly.
+- The second-stage refinement in notebook 4 (section 2) re-clusters each first-stage topic and keeps the coherent sub-clusters. The sub-clusters that were kept are saved in `data/4_topics/refining/`.
+
+### Files not stored in this repository
+
+Two intermediate outputs of notebook 4 are too large for GitHub. Notebook 4 regenerates both, and they are available from the authors on request.
+
+| File | Size | Regenerated by |
+|---|---|---|
+| `data/3_clean/embeddings.npy` | 75 MB | Notebook 4, section 1.1 |
+| `data/4_topics/exp/{20..35}_result_df.xlsx` | 16 × 5.5 MB | Notebook 4, sections 1.1–1.2 |
+
+## Main data files
+
+| File | Rows | Columns |
+|---|---|---|
+| `1_raw/final_raw_df.xlsx` | 60,473 | `id`, `app`, `content`, `score` (star rating), `source` (`play_store` / `app_store`) |
+| `2_translated/final_translated_df.xlsx` | 60,244 | as above, plus `language`, `content_translated` |
+| `3_clean/clean_df.xlsx` | 48,621 | `app`, `content`, `score`, `source`, `language`, `content_translated` |
+| `4_topics/all_clusters_with_final_cluster.xlsx` | 7,808 | as above, plus `cluster`, `topic_probability`, `refined_topic`, `subcluster_topic`, `final_cluster`, `source_file` |
+| `5_sentiment/final_data.xlsx` | 7,667 | `review_id`, `review`, `cluster_id`, `cluster_name`, `user_rating` |
+
+The reviews contain only the review text, star rating and app name. No usernames or other reviewer details were collected.
+
+## Previous version
+
+The 2024 version of this analysis (before the January 2026 data update) is kept under the git tag [`v1-2024`](https://github.com/Syukrondzeko/natural-disaster-app-review-analysis/tree/v1-2024).
+
+## Citation
+
+If you use this repository, please cite the paper:
+
+```bibtex
+@article{syukron2026disasterapps,
+  title   = {Engineering for Crisis Management: A User-Centred Analysis of Disaster Mobile Applications},
+  author  = {Syukron, Muhamad and Madugalla, Anuradha and Shahin, Mojtaba and Grundy, John and Abrahams, Jonathan},
+  journal = {International Journal of Disaster Risk Reduction},
+  year    = {2026},
+  note    = {Submitted}
+}
+```
+
+## License
+
+- **Code** (`src/`, `notebooks/`): [MIT](LICENSE).
+- **Data** (`data/`): [CC BY 4.0](LICENSE-DATA.md). The review texts were written by app store users and were collected from public app store pages for research purposes.
+
+## Acknowledgements
+
+- Reviews were collected with [google-play-scraper](https://github.com/JoMingyu/google-play-scraper) and [app-store-web-scraper](https://pypi.org/project/app-store-web-scraper/).
+- Translation uses [OPUS-MT](https://github.com/Helsinki-NLP/Opus-MT), topic modelling uses [BERTopic](https://github.com/MaartenGr/BERTopic), and sentiment analysis uses [VADER](https://github.com/cjhutto/vaderSentiment).
+- This work was supported by the ARC Laureate Fellowship FL190100035 awarded to John Grundy.

@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the paper below."
+title: "Disaster Mobile App Review Analysis"
+type: software
+authors:
+  - given-names: Muhamad
+    family-names: Syukron
+    affiliation: Institut Teknologi Sepuluh Nopember
+  - given-names: Anuradha
+    family-names: Madugalla
+    affiliation: Deakin University
+  - given-names: Mojtaba
+    family-names: Shahin
+    affiliation: RMIT University
+  - given-names: John
+    family-names: Grundy
+    affiliation: Monash University
+  - given-names: Jonathan
+    family-names: Abrahams
+    affiliation: Monash University
+repository-code: "https://github.com/Syukrondzeko/natural-disaster-app-review-analysis"
+license: MIT
+keywords:
+  - disaster mobile apps
+  - app reviews
+  - topic modelling
+  - sentiment analysis
+  - BERTopic
+  - VADER
+preferred-citation:
+  type: article
+  title: "Engineering for Crisis Management: A User-Centred Analysis of Disaster Mobile Applications"
+  authors:
+    - given-names: Muhamad
+      family-names: Syukron
+    - given-names: Anuradha
+      family-names: Madugalla
+    - given-names: Mojtaba
+      family-names: Shahin
+    - given-names: John
+      family-names: Grundy
+    - given-names: Jonathan
+      family-names: Abrahams
+  journal: "International Journal of Disaster Risk Reduction"
+  year: 2026
+  status: submitted
