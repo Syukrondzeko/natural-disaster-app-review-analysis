@@ -116,6 +116,6 @@ If you use this repository, please cite the paper:
 
 ## Acknowledgements
 
-- Reviews were collected with [google-play-scraper](https://github.com/JoMingyu/google-play-scraper) and [app-store-web-scraper](https://pypi.org/project/app-store-web-scraper/).
+- Reviews were collected with [google-play-scraper](https://github.com/JoMingyu/google-play-scraper) and [app-store-web-scraper](https://github.com/futurice/app-store-web-scraper).
 - Translation uses [OPUS-MT](https://github.com/Helsinki-NLP/Opus-MT), topic modelling uses [BERTopic](https://github.com/MaartenGr/BERTopic), and sentiment analysis uses [VADER](https://github.com/cjhutto/vaderSentiment).
 - This work was supported by the ARC Laureate Fellowship FL190100035 awarded to John Grundy.
