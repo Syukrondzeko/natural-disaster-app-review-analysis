@@ -28,7 +28,7 @@ keywords:
   - BERTopic
   - VADER
 preferred-citation:
-  type: unpublished
+  type: article
   title: "Engineering for Crisis Management: A User-Centred Analysis of Disaster Mobile Applications"
   authors:
     - given-names: Muhamad
@@ -39,7 +39,8 @@ preferred-citation:
       family-names: Shahin
     - given-names: John
       family-names: Grundy
-    - given-names: Jonathan
-      family-names: Abrahams
-  year: 2026
-  status: in-preparation
+  year: 2024
+  status: preprint
+  journal: "arXiv preprint arXiv:2407.08145"
+  doi: "10.48550/arXiv.2407.08145"
+  url: "https://arxiv.org/abs/2407.08145"

@@ -4,7 +4,7 @@ Replication package for the paper:
 
 > **Engineering for Crisis Management: A User-Centred Analysis of Disaster Mobile Applications**
 > Muhamad Syukron, Anuradha Madugalla, Mojtaba Shahin, John Grundy, Jonathan Abrahams.
-> Manuscript in preparation, 2026.
+> Preprint: [arXiv:2407.08145](https://arxiv.org/abs/2407.08145). A revised version is in preparation for journal submission.
 
 The study analyses 70 disaster mobile apps and their user reviews from the Google Play Store and Apple App Store. It uses topic modelling (BERTopic) to find what users talk about, and sentiment analysis (VADER) to find which topics they are least satisfied with.
 
@@ -97,14 +97,18 @@ The 2024 version of this analysis (before the January 2026 data update) is kept 
 
 ## Citation
 
-If you use this repository, please cite the paper:
+If you use this repository, please cite the preprint:
 
 ```bibtex
-@unpublished{syukron2026disasterapps,
-  title  = {Engineering for Crisis Management: A User-Centred Analysis of Disaster Mobile Applications},
-  author = {Syukron, Muhamad and Madugalla, Anuradha and Shahin, Mojtaba and Grundy, John and Abrahams, Jonathan},
-  year   = {2026},
-  note   = {Manuscript in preparation}
+@misc{syukron2024disasterapps,
+  title         = {Engineering for Crisis Management: A User-Centred Analysis of Disaster Mobile Applications},
+  author        = {Syukron, Muhamad and Madugalla, Anuradha and Shahin, Mojtaba and Grundy, John},
+  year          = {2024},
+  eprint        = {2407.08145},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.SE},
+  doi           = {10.48550/arXiv.2407.08145},
+  url           = {https://arxiv.org/abs/2407.08145}
 }
 ```
 
